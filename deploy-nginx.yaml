@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+  namespace: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - env:
+        - name: NGINX_PORT
+          value: "80"
+        image: nginx:1.16
+        name: nginx
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: nginx
+  type: NodePort
