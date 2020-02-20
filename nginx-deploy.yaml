@@ -2,39 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: nginx
-  name: nginx
+    run: nginx-deploy
+  name: nginx-deploy
   namespace: web
 spec:
   replicas: 3
   selector:
     matchLabels:
-      run: nginx
+      run: nginx-deploy
   strategy: {}
   template:
     metadata:
       labels:
-        run: nginx
+        run: nginx-deploy
     spec:
       containers:
       - env:
         - name: NGINX_PORT
           value: "80"
         image: nginx:1.16
-        name: nginx
----
+        name: nginx-deploy
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    run: nginx
-  name: nginx
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    run: nginx
-  type: NodePort
